@@ -4,7 +4,7 @@ This component only support vertical swipe. If want to use horizontal swiper, us
 
 ## Usage
 ```js
-import VerticalViewPager from 'react_native_vertical_view_pager';
+import VerticalViewPager from 'react-native-vertical-view-pager';
 
 
 ```
