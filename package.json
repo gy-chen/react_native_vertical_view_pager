@@ -3,11 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-native-scripts": "1.5.0",
+    "expo": "^21.0.0",
     "jest-expo": "^21.0.2",
-    "react-test-renderer": "16.0.0-alpha.12",
+    "prop-types": "^15.6.0",
+    "react": "16.0.0-alpha.12",
     "react-dom": "16.0.0-alpha.12",
-    "prop-types": "^15.6.0"
+    "react-native": "^0.48.4",
+    "react-native-scripts": "1.5.0",
+    "react-test-renderer": "16.0.0-alpha.12"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
@@ -20,9 +27,5 @@
   "jest": {
     "preset": "jest-expo"
   },
-  "dependencies": {
-    "expo": "^21.0.0",
-    "react": "16.0.0-alpha.12",
-    "react-native": "^0.48.4"
-  }
+  "dependencies": {}
 }
