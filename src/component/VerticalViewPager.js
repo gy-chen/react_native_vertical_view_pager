@@ -36,6 +36,7 @@ class VerticalViewPager extends Component {
             x: 0,
             y
         };
+        this._startEnableScrollTimer();
     }
 
     onScrollBeginDrag(e) {
@@ -61,7 +62,6 @@ class VerticalViewPager extends Component {
         const nextYOffset = startY + height;
         // scrollTo that point
         this.scrollTo({y: nextYOffset, animated: true});
-        this._contentOffset = {x: 0, y: nextYOffset}
         this.setState({
             scrollEnabled: false
         });
@@ -74,7 +74,6 @@ class VerticalViewPager extends Component {
         const nextYOffset = startY - height;
         // scrollTo that point
         this.scrollTo({y: nextYOffset, animated: true});
-        this._contentOffset = {x: 0, y: nextYOffset};
         this.setState({
             scrollEnabled: false
         });
@@ -121,7 +120,6 @@ class VerticalViewPager extends Component {
     _startEnableScrollTimer() {
         clearTimeout(this._enableScrollTimer);
         this._enableScrollTimer = setTimeout(() => {
-            console.log('enableScrollTimer fired');
             this.setState({
                 scrollEnabled: true
             });
@@ -132,7 +130,6 @@ class VerticalViewPager extends Component {
                     contentOffset: this._contentOffset
                 }
             };
-            console.log(e);
             _.invoke(this.props, 'onMomentumScrollEnd', e);
         }, 100);
     }
@@ -141,6 +138,7 @@ class VerticalViewPager extends Component {
         const {contentOffset} = this.props;
         const {contentOffset: nextContentOffset} = nextProps;
         if (contentOffset != nextContentOffset) {
+            // contentOffset is iOS only attribute in ScrollView. Use scrollTo to mimic this bahavior in Android.
             this.scrollTo({...nextContentOffset, animated: false});
         }
     }
@@ -152,6 +150,7 @@ class VerticalViewPager extends Component {
         } = this.props;
         return (
             <ScrollView
+                {...this.props}
                 ref={scrollview => this._refScrollView(scrollview)}
                 onLayout={e => this._onLayout(e)}
                 horizontal={false}
@@ -160,9 +159,7 @@ class VerticalViewPager extends Component {
                 onScrollBeginDrag={e => this.onScrollBeginDrag(e)}
                 onScrollEndDrag={e => this.onScrollEndDrag(e)}
                 onScroll={e => this.onScroll(e)}
-                contentContainerStyle={contentContainerStyle}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}>
+                contentContainerStyle={contentContainerStyle}>
                 {this.props.children}
             </ScrollView>
         )
