@@ -31,14 +31,14 @@ class VerticalViewPager extends Component {
     }
 
     scrollTo({x, y, animated}) {
-        console.log('scrollTo');
-        console.log({y, animated});
         this.scrollview.scrollTo({x, y, animated});
+        this._contentOffset = {
+            x: 0,
+            y
+        };
     }
 
     onScrollBeginDrag(e) {
-        console.log('onScrollBeginDrag');
-        console.log(e.nativeEvent);
         // record starting points
         this._setStartOffset(e.nativeEvent.contentOffset);
         this._scrolling = true;
@@ -46,8 +46,6 @@ class VerticalViewPager extends Component {
     }
 
     onScrollEndDrag(e) {
-        console.log('onScrollEndDrag');
-        console.log(e.nativeEvent)
         // record ending points
         this._setEndOffset(e.nativeEvent.contentOffset);
         this._scrolling = false;
@@ -56,17 +54,7 @@ class VerticalViewPager extends Component {
         _.invoke(this.props, 'onScrollEndDrag', e);
     }
 
-    onMomentumScrollEnd(e) {
-        console.log('onMomentumScrollEnd');
-        console.log(e.nativeEvent);
-        _.invoke(this.props, 'onMomentumScrollEnd', e);
-        this.setState({
-            scrollEnabled: true
-        });
-    }
-
     nextPage() {
-        console.log('nextPage');
         // calculate next y offset value
         const {height} = this._layout;
         const {y: startY} = this._startContentOffset;
@@ -80,7 +68,6 @@ class VerticalViewPager extends Component {
     }
 
     prevPage() {
-        console.log('prevPage');
         // calcullate prev page's y offset value
         const {height} = this._layout;
         const {y: startY} = this._startContentOffset;
@@ -171,7 +158,6 @@ class VerticalViewPager extends Component {
                 style={style}
                 scrollEnabled={this.state.scrollEnabled}
                 onScrollBeginDrag={e => this.onScrollBeginDrag(e)}
-                onMomentumScrollEnd={e => this.onMomentumScrollEnd(e)}
                 onScrollEndDrag={e => this.onScrollEndDrag(e)}
                 onScroll={e => this.onScroll(e)}
                 contentContainerStyle={contentContainerStyle}
