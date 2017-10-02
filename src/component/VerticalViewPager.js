@@ -134,7 +134,7 @@ class VerticalViewPager extends Component {
             };
             console.log(e);
             _.invoke(this.props, 'onMomentumScrollEnd', e);
-        }, 25);
+        }, 100);
     }
 
     componentWillReceiveProps(nextProps) {
