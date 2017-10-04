@@ -159,6 +159,7 @@ class VerticalViewPager extends Component {
                 onScrollBeginDrag={e => this.onScrollBeginDrag(e)}
                 onScrollEndDrag={e => this.onScrollEndDrag(e)}
                 onScroll={e => this.onScroll(e)}
+                scrollEventThrottle={50}
                 contentContainerStyle={contentContainerStyle}>
                 {this.props.children}
             </ScrollView>
