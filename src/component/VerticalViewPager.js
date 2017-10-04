@@ -117,6 +117,11 @@ class VerticalViewPager extends Component {
         this._layout = e.nativeEvent.layout;
     }
 
+    onMomentumScrollEnd(e) {
+      // XXX this event callback do nothing, but why if I remove this callback
+      // will occurs scrollview behave unnormally when scroll very quickly?
+    }
+
     _startEnableScrollTimer() {
         clearTimeout(this._enableScrollTimer);
         this._enableScrollTimer = setTimeout(() => {
@@ -158,6 +163,7 @@ class VerticalViewPager extends Component {
                 scrollEnabled={this.state.scrollEnabled}
                 onScrollBeginDrag={e => this.onScrollBeginDrag(e)}
                 onScrollEndDrag={e => this.onScrollEndDrag(e)}
+                onMomentumScrollEnd={ e => this.onMomentumScrollEnd(e)}
                 onScroll={e => this.onScroll(e)}
                 scrollEventThrottle={50}
                 contentContainerStyle={contentContainerStyle}>
