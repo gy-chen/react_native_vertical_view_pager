@@ -179,7 +179,7 @@ VerticalViewPager.propTypes = {
     // style of page container
     contentContainerStyle: PropTypes.oneOfType([
         PropTypes.object,
-        PropTypes.array
+        PropTypes.number
     ]),
     contentOffset: PropTypes.object,
     // onScrollBeginDrag(nativeEvent)
@@ -195,7 +195,7 @@ VerticalViewPager.propTypes = {
     onScrollEndDrag: PropTypes.func,
     style: PropTypes.oneOfType([
         PropTypes.object,
-        PropTypes.array
+        PropTypes.number
     ])
 };
 
