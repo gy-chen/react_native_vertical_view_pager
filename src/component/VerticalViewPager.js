@@ -146,7 +146,10 @@ class VerticalViewPager extends Component {
         const {contentOffset: nextContentOffset} = nextProps;
         if (contentOffset != nextContentOffset) {
             // contentOffset is iOS only attribute in ScrollView. Use scrollTo to mimic this bahavior in Android.
-            this.scrollTo({...nextContentOffset, animated: true});
+            // XXX If update swiper children and also change contentOffset, scrollTo will not work. Don't know why...
+            setTimeout(function() {
+              this.scrollTo({...nextContentOffset, animated: true});
+            }.bind(this), 25)
         }
     }
 
