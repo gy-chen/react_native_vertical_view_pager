@@ -55,30 +55,6 @@ class VerticalViewPager extends Component {
         _.invoke(this.props, 'onScrollEndDrag', e);
     }
 
-    nextPage() {
-        // calculate next y offset value
-        const {height} = this._layout;
-        const {y: startY} = this._startContentOffset;
-        const nextYOffset = startY + height;
-        // scrollTo that point
-        this.scrollTo({y: nextYOffset, animated: true});
-        this.setState({
-            scrollEnabled: false
-        });
-    }
-
-    prevPage() {
-        // calcullate prev page's y offset value
-        const {height} = this._layout;
-        const {y: startY} = this._startContentOffset;
-        const nextYOffset = startY - height;
-        // scrollTo that point
-        this.scrollTo({y: nextYOffset, animated: true});
-        this.setState({
-            scrollEnabled: false
-        });
-    }
-
     onScroll(e) {
         if (!this._scrolling) {
             this._startEnableScrollTimer();
@@ -98,15 +74,37 @@ class VerticalViewPager extends Component {
         const {height} = this._layout;
         const {y: startY} = this._startContentOffset;
         const {y: endY} = this._endContentOffset;
-        if ((endY - startY) > height * SCROLL_THRESHOLD) {
-            this.nextPage();
-        }
-        else if ((endY - startY) < -height * SCROLL_THRESHOLD) {
-            this.prevPage();
+        const contentOffset = endY - startY;
+        const offsetPages = this._calculateOffsetPages(contentOffset);
+        if (offsetPages === 0) {
+            if (contentOffset > SCROLL_THRESHOLD * height) {
+                this._scrollOffsetPages(1);
+            } else if (-contentOffset > SCROLL_THRESHOLD * height) {
+                this._scrollOffsetPages(-1);
+            } else {
+              this.scrollTo({y: startY});
+            }
         }
         else {
-            this.scrollTo({y: startY});
+            this._scrollOffsetPages(offsetPages);
         }
+    }
+
+    _calculateOffsetPages(contentOffset) {
+        const {height} = this._layout;
+        const absContentOffset = Math.abs(contentOffset);
+        const centerContentOffset = Math.max(absContentOffset - height / 2, 0);
+        return Math.sign(contentOffset) * Math.ceil(centerContentOffset / height);
+    }
+
+    _scrollOffsetPages(offsetPages) {
+        const {height} = this._layout;
+        const {y: startY} = this._startContentOffset;
+        const nextYOffset = startY + height * offsetPages;
+        this.scrollTo({y: nextYOffset, animated: true});
+        this.setState({
+            scrollEnabled: false
+        });
     }
 
     _refScrollView(scrollview) {
@@ -118,10 +116,10 @@ class VerticalViewPager extends Component {
     }
 
     onMomentumScrollEnd(e) {
-      // Because onMomentumScrollEnd event is already be replace by onScroll event
-      // that will event onMomentumScrollEnd if necassary.
-      // Here define this event callback only avoid user to listen onMomentumScrollEnd
-      // of native ScrollView that may cause troubles.
+        // Because onMomentumScrollEnd event is already be replace by onScroll event
+        // that will event onMomentumScrollEnd if necassary.
+        // Here define this event callback only avoid user to listen onMomentumScrollEnd
+        // of native ScrollView that may cause troubles.
     }
 
     _startEnableScrollTimer() {
@@ -148,8 +146,8 @@ class VerticalViewPager extends Component {
             // contentOffset is iOS only attribute in ScrollView. Use scrollTo to mimic this bahavior in Android.
             // XXX If update swiper children and also change contentOffset, scrollTo will not work. Don't know why...
             setTimeout(function() {
-              this.scrollTo({...nextContentOffset, animated: true});
-            }.bind(this), 25)
+                this.scrollTo({...nextContentOffset, animated: true});
+            }.bind(this), 25);
         }
     }
 
@@ -174,7 +172,7 @@ class VerticalViewPager extends Component {
                 contentContainerStyle={contentContainerStyle}>
                 {this.props.children}
             </ScrollView>
-        )
+        );
     }
 }
 
