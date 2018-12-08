@@ -83,6 +83,7 @@ class VerticalViewPager extends Component {
         if (!this._scrolling) {
             this._startEnableScrollTimer();
         }
+        _.invoke(this.props, 'onScroll', e);
     }
 
     _setStartOffset(startOffset) {
